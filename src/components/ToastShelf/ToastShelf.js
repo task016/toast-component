@@ -1,26 +1,10 @@
-import React, { useImperativeHandle, useState } from "react";
-
+import React, { useContext } from "react";
 import Toast from "../Toast";
 import styles from "./ToastShelf.module.css";
+import { ToastContext } from "../ToastProvider/ToastProvider";
 
-function ToastShelf(props, ref) {
-  const [toasts, setToasts] = useState([]);
-
-  useImperativeHandle(ref, () => {
-    return {
-      popToast(toast) {
-        if (!toast.message || !toast.variant) {
-          throw new Error("Please provide Toast message & variant!");
-        }
-        setToasts([...toasts, { ...toast, id: crypto.randomUUID() }]);
-      },
-    };
-  });
-
-  function dismissToast(id) {
-    setToasts(toasts.filter((toast) => toast.id !== id));
-  }
-
+function ToastShelf() {
+  const { toasts, dismissToast } = useContext(ToastContext);
   return (
     <>
       {toasts.length > 0 && (
@@ -43,4 +27,4 @@ function ToastShelf(props, ref) {
   );
 }
 
-export default React.forwardRef(ToastShelf);
+export default ToastShelf;

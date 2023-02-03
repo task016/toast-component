@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useContext } from "react";
 import Button from "../Button";
-import ToastShelf from "../ToastShelf/ToastShelf";
+import { ToastContext } from "../ToastProvider/ToastProvider";
 import styles from "./ToastPlayground.module.css";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
@@ -8,11 +8,11 @@ const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 function ToastPlayground() {
   const [selectedVariant, setSelectedVariant] = useState(VARIANT_OPTIONS[0]);
   const [message, setMessage] = useState("");
-  const toastShelfRef = useRef();
+  const { popToast } = useContext(ToastContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    toastShelfRef.current.popToast({
+    popToast({
       message,
       variant: selectedVariant,
     });
@@ -26,7 +26,7 @@ function ToastPlayground() {
         <img alt="Cute toast mascot" src="/toast.png" />
         <h1>Toast Playground</h1>
       </header>
-      <ToastShelf ref={toastShelfRef} />
+
       <form onSubmit={handleSubmit}>
         <div className={styles.controlsWrapper}>
           <div className={styles.row}>
